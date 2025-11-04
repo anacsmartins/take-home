@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (_, i) {
                         final item = state.list[i];
                         return ListTile(
+                          key: Key('kShortItem-$i'),
                           title: Text(item.shortUrl),
                           subtitle: Text(item.originalUrl),
                         );

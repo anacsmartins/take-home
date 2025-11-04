@@ -33,7 +33,7 @@ void main() {
     );
   }
 
-  testWidgets('full flow: type + tap + success render', (tester) async {
+  testWidgets('full flow: type + tap + success render (scoped by keys)', (tester) async {
     when(() => mockUsecase.call(inputUrl)).thenAnswer((_) async {
       return const AliasEntity(
         alias: 'flutter.dev',
@@ -44,14 +44,31 @@ void main() {
 
     await pumpHomePage(tester);
 
+    // Interação usando KEYS (evita ambiguidade com EditableText)
     await tester.enterText(find.byKey(const Key('kInputUrl')), inputUrl);
     await tester.tap(find.byKey(const Key('kButtonShorten')));
-    await tester.pump();
-    await tester.pump();
 
-    expect(find.byKey(const Key('kListShortened')), findsOneWidget);
-    expect(find.text('https://short/flutter.dev'), findsOneWidget);
-    expect(find.text(inputUrl), findsOneWidget);
+    // Aguarda animações/emissões do Cubit e rebuilds
+    await tester.pump();          // resolve loading
+    await tester.pumpAndSettle(); // espera Success + List renderizada
+
+    // Lista presente
+    final listFinder = find.byKey(const Key('kListShortened'));
+    expect(listFinder, findsOneWidget);
+
+    // Item 0 presente (usando a key do item)
+    final tile0 = find.byKey(const Key('kShortItem-0'));
+    expect(tile0, findsOneWidget);
+
+    // Valida textos **escopados ao item** (não global)
+    expect(
+      find.descendant(of: tile0, matching: find.text('https://short/flutter.dev')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: tile0, matching: find.text(inputUrl)),
+      findsOneWidget,
+    );
 
     verify(() => mockUsecase.call(inputUrl)).called(1);
   });
