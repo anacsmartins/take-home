@@ -1,0 +1,75 @@
+# --- Dart / Flutter core ---
+.dart_tool/
+build/
+.buildlog/
+.packages
+.pub-cache/
+coverage/
+flutter_export_environment.sh
+
+# --- Plugins do Flutter gerados ---
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+
+# --- Arquivos gerados por build_runner (CI irá gerar) ---
+*.g.dart
+*.freezed.dart
+*.gr.dart
+*.mocks.dart
+lib/injection/injection.config.dart
+
+# --- Ambiente / Segredos ---
+.env
+*.env
+*.jks
+*.keystore
+key.properties
+android/key.properties
+
+# --- Android ---
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+android/app/google-services.json
+
+# --- iOS ---
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+ios/Runner/GoogleService-Info.plist
+
+# --- macOS ---
+macos/Pods/
+macos/.symlinks/
+macos/Flutter/ephemeral/
+
+# --- Windows ---
+**/CMakeFiles/
+**/cmake-build-*/
+windows/runner/Debug/
+windows/runner/Release/
+
+# --- Linux ---
+linux/flutter/ephemeral/
+linux/build/
+
+# --- Web ---
+web/.dart_tool/
+
+# --- IDEs / Editor ---
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+*.swp
+*.swo
+
+# --- SO ---
+.DS_Store
+Thumbs.db
