@@ -9,19 +9,61 @@ Aplicação mobile Flutter para encurtar URLs e visualizar a lista recente de li
 - Lista com aliases retornados
 - Sessão em memória (não persiste localmente)
 
-API utilizada:  
+# URL Shortener – Flutter Take Home
+
+[![tests](https://github.com/your_user/your_repo_name/actions/workflows/flutter_test.yml/badge.svg)](https://github.com/your_user/your_repo_name/actions/workflows/flutter_test.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+![Flutter](https://img.shields.io/badge/Flutter-Enterprise_Architecture-blue)
+
+Mobile application built in Flutter to shorten URLs and display the recently generated short links during the session.  
+Focused on code quality, separation of concerns and testability.
+
+### API
 `https://url-shortener-server.onrender.com/api/alias`
 
-## Stacks
+---
 
-| Área | Tecnologia |
-|------|------------|
-| Mobile | Flutter (Dart null safety) |
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Architecture | Clean Architecture |
+| Mobile | Flutter (Dart Null Safety) |
+| State Management | Cubit (flutter_bloc 8.x) |
+| DI | get_it + injectable (+ generator) |
 | HTTP Client | http |
-| State Management | Riverpod |
-| Arquitetura | Clean Layers (data / domain / presentation) |
-| Testes | Unit Test + Widget Test |
-| Qualidade | Lints, separação de responsabilidades, zero code smell |
+| Tests | flutter_test + mocktail |
+| Quality | clean code, sealed state, domain isolation, zero smell |
+
+---
+
+## Project Structure
+```bash
+lib/
+data/
+domain/
+presentation/
+shared/
+injection/
+test/
+domain/
+data/
+presentation/
+``` 
+
+---
+
+## Running
+
+```bash
+flutter pub get
+flutter run
+
+Running Tests
+
+flutter test
+
+```
 
 ## Arquitetura do Projeto
 
@@ -29,22 +71,6 @@ Clean Architecture é a abordagem mais adotada em Flutter hoje, pois separa resp
 
 Cubit é considerado uma boa prática em Flutter quando usado para estado de UI de baixa/média complexidade, pois reduz boilerplate mantendo previsibilidade e testabilidade.
 
-```bash
-    lib/
-    data/
-      models/
-      datasources/
-      repositories/
-    domain/
-      entities/
-      repositories/
-      usecases/
-    presentation/
-      cubit/
-      pages/
-      widgets/
-    shared/
-``` 
 **Fluxograma**
 - 1- UI → Cubit.addUrl(url)
 - 2- Cubit chama usecase
@@ -58,9 +84,3 @@ Cubit é considerado uma boa prática em Flutter quando usado para estado de UI 
 - **domain** → entidade e casos de uso (regras puras)
 - **presentation** → UI + estado (Riverpod)
 - **shared** → erros e utilidades comuns
-
-## Executar o projeto
-
-```bash
-    flutter pub get
-    flutter run
