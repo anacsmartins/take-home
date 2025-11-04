@@ -5,6 +5,7 @@ dependencies:
   http: ^1.2.2
 
 dev_dependencies:
+  mocktail: ^1.0.4
   build_runner: ^2.4.11
   injectable_generator: ^2.6.1
   flutter_test:
