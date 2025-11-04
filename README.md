@@ -73,16 +73,17 @@ test/
 
 ---
 
-## Running
+## Como executar localmente
 
+### Instalar dependências
 ```bash
 flutter pub get
-flutter run
+```
+## Rodar o app (em emulador ou device)
 
-Running Tests
-
+### Running Tests
+```bash
 flutter test
-
 ```
 
 ## Project Architecture
