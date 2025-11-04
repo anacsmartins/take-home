@@ -1,4 +1,4 @@
-import '../../domain/entities/alias_entity.dart';
+import 'package:url_shortener/domain/entities/alias_entity.dart';
 
 sealed class ShortenerState {}
 

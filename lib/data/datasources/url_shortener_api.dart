@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 
-import '../../shared/constants.dart';
-import '../../shared/exceptions.dart';
-import '../models/alias_response.dart';
+import 'package:url_shortener/shared/constants.dart';
+import 'package:url_shortener/shared/exceptions.dart';
+import 'package:url_shortener/data/models/alias_response.dart';
 
 @lazySingleton
 class UrlShortenerApi {

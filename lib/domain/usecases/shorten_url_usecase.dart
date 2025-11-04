@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
-import '../entities/alias_entity.dart';
-import '../repositories/alias_repository.dart';
+import 'package:url_shortener/domain/entities/alias_entity.dart';
+import 'package:url_shortener/domain/repositories/alias_repository.dart';
 
 @lazySingleton
 class ShortenUrlUseCase {

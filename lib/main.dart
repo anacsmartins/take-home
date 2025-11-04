@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'injection/injection.dart';
-import 'presentation/cubit/shortener_cubit.dart';
-import 'presentation/pages/home_page.dart';
+import 'package:url_shortener/injection/injection.dart';
+import 'package:url_shortener/presentation/cubit/shortener_cubit.dart';
+import 'package:url_shortener/presentation/pages/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

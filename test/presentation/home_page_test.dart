@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../lib/domain/entities/alias_entity.dart';
-import '../../lib/domain/usecases/shorten_url_usecase.dart';
-import '../../lib/presentation/cubit/shortener_cubit.dart';
-import '../../lib/presentation/pages/home_page.dart';
+import 'package:url_shortener/domain/entities/alias_entity.dart';
+import 'package:url_shortener/domain/usecases/shorten_url_usecase.dart';
+import 'package:url_shortener/presentation/cubit/shortener_cubit.dart';
+import 'package:url_shortener/presentation/pages/home_page.dart';
 
 class MockShortenUrlUseCase extends Mock implements ShortenUrlUseCase {}
 
@@ -25,15 +25,14 @@ void main() {
   Future<void> pumpHomePage(WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: BlocProvider.value(
-          value: cubit,
-          child: const HomePage(),
-        ),
+        home: BlocProvider.value(value: cubit, child: const HomePage()),
       ),
     );
   }
 
-  testWidgets('full flow: type + tap + success render (scoped by keys)', (tester) async {
+  testWidgets('full flow: type + tap + success render (scoped by keys)', (
+    tester,
+  ) async {
     when(() => mockUsecase.call(inputUrl)).thenAnswer((_) async {
       return const AliasEntity(
         alias: 'flutter.dev',
@@ -49,7 +48,7 @@ void main() {
     await tester.tap(find.byKey(const Key('kButtonShorten')));
 
     // Aguarda animações/emissões do Cubit e rebuilds
-    await tester.pump();          // resolve loading
+    await tester.pump(); // resolve loading
     await tester.pumpAndSettle(); // espera Success + List renderizada
 
     // Lista presente
@@ -62,7 +61,10 @@ void main() {
 
     // Valida textos **escopados ao item** (não global)
     expect(
-      find.descendant(of: tile0, matching: find.text('https://short/flutter.dev')),
+      find.descendant(
+        of: tile0,
+        matching: find.text('https://short/flutter.dev'),
+      ),
       findsOneWidget,
     );
     expect(

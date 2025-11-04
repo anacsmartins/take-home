@@ -1,4 +1,4 @@
-import '../../domain/entities/alias_entity.dart';
+import 'package:url_shortener/domain/entities/alias_entity.dart';
 
 class AliasResponse {
   final String alias;
@@ -20,9 +20,6 @@ class AliasResponse {
     );
   }
 
-  AliasEntity toEntity() => AliasEntity(
-        alias: alias,
-        originalUrl: originalUrl,
-        shortUrl: shortUrl,
-      );
+  AliasEntity toEntity() =>
+      AliasEntity(alias: alias, originalUrl: originalUrl, shortUrl: shortUrl);
 }

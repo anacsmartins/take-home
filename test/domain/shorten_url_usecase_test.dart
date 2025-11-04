@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../lib/domain/entities/alias_entity.dart';
-import '../../lib/domain/repositories/alias_repository.dart';
-import '../../lib/domain/usecases/shorten_url_usecase.dart';
+import 'package:url_shortener/domain/entities/alias_entity.dart';
+import 'package:url_shortener/domain/repositories/alias_repository.dart';
+import 'package:url_shortener/domain/usecases/shorten_url_usecase.dart';
 
 class MockAliasRepository extends Mock implements AliasRepository {}
 

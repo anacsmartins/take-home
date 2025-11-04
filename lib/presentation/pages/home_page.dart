@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/shortener_cubit.dart';
-import '../cubit/shortener_state.dart';
+import 'package:url_shortener/presentation/cubit/shortener_cubit.dart';
+import 'package:url_shortener/presentation/cubit/shortener_state.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                   return const SizedBox.shrink();
                 },
               ),
-            )
+            ),
           ],
         ),
       ),

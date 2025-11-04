@@ -1,10 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../lib/domain/entities/alias_entity.dart';
-import '../../lib/data/datasources/url_shortener_api.dart';
-import '../../lib/data/repositories/alias_repository_impl.dart';
-import '../../lib/data/models/alias_response.dart';
+import 'package:url_shortener/data/datasources/url_shortener_api.dart';
+import 'package:url_shortener/data/repositories/alias_repository_impl.dart';
+import 'package:url_shortener/data/models/alias_response.dart';
 
 class MockApi extends Mock implements UrlShortenerApi {}
 
@@ -22,7 +21,7 @@ void main() {
 
   test('repository converts API DTO -> Entity correctly', () async {
     when(() => api.shorten(urlInput)).thenAnswer((_) async {
-      return AliasResponse(
+      return const AliasResponse(
         alias: 'flutter.dev',
         originalUrl: urlInput,
         shortUrl: 'https://short/flutter.dev',
