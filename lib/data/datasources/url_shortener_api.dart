@@ -1,14 +1,15 @@
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
 
 import '../../shared/constants.dart';
 import '../../shared/exceptions.dart';
 import '../models/alias_response.dart';
 
+@lazySingleton
 class UrlShortenerApi {
   final http.Client _client;
-  UrlShortenerApi({http.Client? client}) : _client = client ?? http.Client();
+  UrlShortenerApi(this._client);
 
   Future<AliasResponse> shorten(String url) async {
     final uri = Uri.parse(baseUrl);
