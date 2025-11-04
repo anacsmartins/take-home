@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../domain/usecases/shorten_url_usecase.dart';
 import 'shortener_state.dart';
 
+@injectable
 class ShortenerCubit extends Cubit<ShortenerState> {
   final ShortenUrlUseCase usecase;
 
