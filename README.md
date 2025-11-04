@@ -20,6 +20,7 @@ Focused on code quality, separation of concerns and testability.
 
 ### API
 `https://url-shortener-server.onrender.com/api/alias`
+
 The backend logic and URL shortening service is provided externally (this app only consumes the exposed API).
 
 ---
