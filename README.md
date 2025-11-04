@@ -11,7 +11,7 @@ Flutter mobile application to shorten URLs and display the list of recently gene
 
 # URL Shortener – Flutter Take Home
 
-[![CI Tests](https://img.shields.io/github/actions/workflow/status/anacsmartins/take-home/flutter_test.yml?label=tests&logo=github)](https://github.com/anacsmartins/take-home/actions/workflows/flutter_test.yml)
+![CI Tests](https://github.com/anacsmartins/take-home/actions/workflows/flutter_test.yml/badge.svg?branch=main)
 ![license: MIT](https://img.shields.io/badge/license-MIT-green.svg)
 ![Flutter](https://img.shields.io/badge/Flutter-Enterprise_Architecture-blue)
 
