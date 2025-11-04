@@ -23,11 +23,13 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             TextField(
+              key: const Key('kInputUrl'),
               controller: controller,
               decoration: const InputDecoration(labelText: 'URL'),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
+              key: const Key('kButtonShorten'),
               onPressed: () {
                 context.read<ShortenerCubit>().shorten(controller.text.trim());
               },
@@ -45,6 +47,7 @@ class _HomePageState extends State<HomePage> {
                   }
                   if (state is ShortenerSuccess) {
                     return ListView.builder(
+                      key: const Key('kListShortened'),
                       itemCount: state.list.length,
                       itemBuilder: (_, i) {
                         final item = state.list[i];
