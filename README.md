@@ -11,7 +11,7 @@ Flutter mobile application to shorten URLs and display the list of recently gene
 
 # URL Shortener – Flutter Take Home
 
-[![CI Tests](https://img.shields.io/github/actions/workflow/status/anacsmartins/take-home/flutter_test.yml?label=tests&logo=github)](https://github.com/anacsmartins/take-home/actions/workflows/flutter_test.yml)
+![CI Tests](https://github.com/anacsmartins/take-home/actions/workflows/flutter_test.yml/badge.svg?branch=main)
 ![license: MIT](https://img.shields.io/badge/license-MIT-green.svg)
 ![Flutter](https://img.shields.io/badge/Flutter-Enterprise_Architecture-blue)
 
@@ -42,29 +42,48 @@ The backend logic and URL shortening service is provided externally (this app on
 ## Project Structure
 ```bash
 lib/
-data/
-domain/
-presentation/
-shared/
-injection/
+├─ data/
+│ ├─ datasources/
+│ ├─ models/
+│ └─ repositories/
+│
+├─ domain/
+│ ├─ entities/
+│ ├─ repositories/
+│ └─ usecases/
+│
+├─ presentation/
+│ ├─ cubit/
+│ ├─ pages/
+│ └─ widgets/
+│
+├─ shared/
+│ ├─ constants.dart
+│ └─ exceptions.dart
+│
+└─ injection/
+├─ modules/
+└─ injection.dart
+
 test/
-domain/
-data/
-presentation/
+├─ data/
+├─ domain/
+└─ presentation/
 ``` 
 
 ---
 
-## Running
+## Como executar localmente
 
+### Instalar dependências
 ```bash
 flutter pub get
-flutter run
+```
+## Rodar o app (em emulador ou device)
 
-Running Tests
-
+### Running Tests
+```bash
 flutter test
-
 ```
 
 ## Project Architecture
@@ -86,8 +105,10 @@ For state management this project uses **Cubit** (`flutter_bloc`). Cubit is cons
 
 ### Layers
 
-- **data** → API communication + DTO parsing + mapping to Entity  
-- **domain** → pure entities + contracts + business rules (UseCases)  
-- **presentation** → UI + Cubit + sealed states  
-- **shared** → exceptions and constants reused across layers
+- **domain** é puro (sem dependência Flutter)
+- **data** isola modelagem remota → API → DTO
+- **presentation** apenas UI camada Cubit
+- **injection** evita acoplamento e deixa testável
+- **shared** contém apenas elementos globais com responsabilidade transversal
+
 
