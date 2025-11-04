@@ -9,7 +9,6 @@ Flutter mobile application to shorten URLs and display the list of recently gene
 - List displaying all returned aliases
 - Session-based in-memory state (no local persistence)
 
-
 # URL Shortener – Flutter Take Home
 
 [![tests](https://github.com/your_user/your_repo_name/actions/workflows/flutter_test.yml/badge.svg)](https://github.com/your_user/your_repo_name/actions/workflows/flutter_test.yml)
@@ -21,6 +20,7 @@ Focused on code quality, separation of concerns and testability.
 
 ### API
 `https://url-shortener-server.onrender.com/api/alias`
+The backend logic and URL shortening service is provided externally (this app only consumes the exposed API).
 
 ---
 
