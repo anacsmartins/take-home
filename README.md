@@ -1,13 +1,14 @@
 # URL Shortener – Flutter Take Home
 
-Aplicação mobile Flutter para encurtar URLs e visualizar a lista recente de links encurtados.
+Flutter mobile application to shorten URLs and display the list of recently generated short links.
 
-## Objetivo
+## Objective
 
-- Input para digitar URL
-- Botão para encurtar
-- Lista com aliases retornados
-- Sessão em memória (não persiste localmente)
+- Text input to type a URL
+- Button to request URL shortening
+- List displaying all returned aliases
+- Session-based in-memory state (no local persistence)
+
 
 # URL Shortener – Flutter Take Home
 
@@ -65,22 +66,27 @@ flutter test
 
 ```
 
-## Arquitetura do Projeto
+## Project Architecture
 
-Clean Architecture é a abordagem mais adotada em Flutter hoje, pois separa responsabilidades em camadas simples (domain / data / presentation) mantendo testabilidade, previsibilidade e baixa complexidade. É alinhada conceitualmente com hexagonal mas mais pragmática para mobile.
+This application follows **Clean Architecture**, a widely adopted approach in Flutter that enforces clear separation of concerns, improves testability, predictability and keeps overall complexity low. It is conceptually aligned with Hexagonal Architecture, but more pragmatic and suitable for mobile development.
 
-Cubit é considerado uma boa prática em Flutter quando usado para estado de UI de baixa/média complexidade, pois reduz boilerplate mantendo previsibilidade e testabilidade.
+For state management this project uses **Cubit** (`flutter_bloc`). Cubit is considered a good practice for low/medium complexity UI state because it avoids excessive boilerplate while maintaining predictability, scalability and testability.
 
-**Fluxograma**
-- 1- UI → Cubit.addUrl(url)
-- 2- Cubit chama usecase
-- 3- usecase chama repository
-- 4- repository chama API datasource
-- 5- resultado volta
-- 6- Cubit dá emit() com novo estado
-- 7- UI re-render
+### Execution Flow
 
-- **data** → comunicação com API + transformação DTO
-- **domain** → entidade e casos de uso (regras puras)
-- **presentation** → UI + estado (Riverpod)
-- **shared** → erros e utilidades comuns
+1. UI calls `cubit.shorten(url)`
+2. Cubit triggers the UseCase
+3. UseCase calls the Repository
+4. Repository calls the Datasource (API)
+5. API returns DTO
+6. Repository converts DTO → Domain Entity
+7. Cubit emits the new State
+8. UI reacts and re-renders
+
+### Layers
+
+- **data** → API communication + DTO parsing + mapping to Entity  
+- **domain** → pure entities + contracts + business rules (UseCases)  
+- **presentation** → UI + Cubit + sealed states  
+- **shared** → exceptions and constants reused across layers
+
