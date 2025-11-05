@@ -12,6 +12,11 @@ void main() {
   late ShortenUrlUseCase usecase;
 
   const urlInput = 'https://flutter.dev';
+  const entity = AliasEntity(
+    alias: 'flutter.dev',
+    originalUrl: urlInput,
+    shortUrl: 'https://short/flutter.dev',
+  );
 
   setUp(() {
     mockRepo = MockAliasRepository();
@@ -19,19 +24,20 @@ void main() {
     registerFallbackValue(urlInput);
   });
 
-  test('should call repository and return entity correctly', () async {
-    when(() => mockRepo.shortenUrl(urlInput)).thenAnswer((_) async {
-      return const AliasEntity(
-        alias: 'flutter.dev',
-        originalUrl: urlInput,
-        shortUrl: 'https://short/flutter.dev',
-      );
-    });
+  test(
+    'usecase → must call repository and return correct mapped entity',
+    () async {
+      // arrange
+      when(() => mockRepo.shortenUrl(urlInput)).thenAnswer((_) async => entity);
 
-    final result = await usecase(urlInput);
+      // act
+      final result = await usecase(urlInput);
 
-    expect(result.alias, 'flutter.dev');
-    expect(result.shortUrl, 'https://short/flutter.dev');
-    verify(() => mockRepo.shortenUrl(urlInput)).called(1);
-  });
+      // assert
+      expect(result.alias, entity.alias);
+      expect(result.originalUrl, entity.originalUrl);
+      expect(result.shortUrl, entity.shortUrl);
+      verify(() => mockRepo.shortenUrl(urlInput)).called(1);
+    },
+  );
 }

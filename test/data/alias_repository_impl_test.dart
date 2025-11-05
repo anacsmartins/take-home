@@ -5,33 +5,41 @@ import 'package:url_shortener/data/datasources/url_shortener_api.dart';
 import 'package:url_shortener/data/repositories/alias_repository_impl.dart';
 import 'package:url_shortener/data/models/alias_response.dart';
 
-class MockApi extends Mock implements UrlShortenerApi {}
+class MockUrlShortenerApi extends Mock implements UrlShortenerApi {}
 
 void main() {
-  late MockApi api;
+  late MockUrlShortenerApi api;
   late AliasRepositoryImpl repository;
 
   const urlInput = 'https://flutter.dev';
 
+  const dto = AliasResponse(
+    alias: 'flutter.dev',
+    originalUrl: urlInput,
+    shortUrl: 'https://short/flutter.dev',
+  );
+
   setUp(() {
-    api = MockApi();
+    api = MockUrlShortenerApi();
     repository = AliasRepositoryImpl(api);
     registerFallbackValue(urlInput);
   });
 
-  test('repository converts API DTO -> Entity correctly', () async {
-    when(() => api.shorten(urlInput)).thenAnswer((_) async {
-      return const AliasResponse(
-        alias: 'flutter.dev',
-        originalUrl: urlInput,
-        shortUrl: 'https://short/flutter.dev',
-      );
-    });
+  test(
+    'data/repository → must call API & correctly map DTO -> Entity',
+    () async {
+      // arrange
+      when(() => api.shorten(urlInput)).thenAnswer((_) async => dto);
 
-    final result = await repository.shortenUrl(urlInput);
+      // act
+      final result = await repository.shortenUrl(urlInput);
 
-    expect(result.alias, 'flutter.dev');
-    expect(result.originalUrl, urlInput);
-    expect(result.shortUrl, 'https://short/flutter.dev');
-  });
+      // assert
+      expect(result.alias, dto.alias);
+      expect(result.originalUrl, dto.originalUrl);
+      expect(result.shortUrl, dto.shortUrl);
+
+      verify(() => api.shorten(urlInput)).called(1);
+    },
+  );
 }

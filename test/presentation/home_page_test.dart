@@ -22,7 +22,7 @@ void main() {
     registerFallbackValue(inputUrl);
   });
 
-  Future<void> pumpHomePage(WidgetTester tester) async {
+  Future<void> pumpHome(WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
         home: BlocProvider.value(value: cubit, child: const HomePage()),
@@ -30,48 +30,47 @@ void main() {
     );
   }
 
-  testWidgets('full flow: type + tap + success render (scoped by keys)', (
-    tester,
-  ) async {
-    when(() => mockUsecase.call(inputUrl)).thenAnswer((_) async {
-      return const AliasEntity(
-        alias: 'flutter.dev',
-        originalUrl: inputUrl,
-        shortUrl: 'https://short/flutter.dev',
+  testWidgets(
+    'presentation/home_page → success flow should render new shortened item in list',
+    (tester) async {
+      // arrange
+      when(() => mockUsecase.call(inputUrl)).thenAnswer(
+        (_) async => const AliasEntity(
+          alias: 'flutter.dev',
+          originalUrl: inputUrl,
+          shortUrl: 'https://short/flutter.dev',
+        ),
       );
-    });
 
-    await pumpHomePage(tester);
+      await pumpHome(tester);
 
-    // Interação usando KEYS (evita ambiguidade com EditableText)
-    await tester.enterText(find.byKey(const Key('kInputUrl')), inputUrl);
-    await tester.tap(find.byKey(const Key('kButtonShorten')));
+      // act
+      await tester.enterText(find.byKey(const Key('kInputUrl')), inputUrl);
+      await tester.tap(find.byKey(const Key('kButtonShorten')));
 
-    // Aguarda animações/emissões do Cubit e rebuilds
-    await tester.pump(); // resolve loading
-    await tester.pumpAndSettle(); // espera Success + List renderizada
+      await tester.pump(); // resolve loading -> success
+      await tester.pumpAndSettle();
 
-    // Lista presente
-    final listFinder = find.byKey(const Key('kListShortened'));
-    expect(listFinder, findsOneWidget);
+      // assert
+      final listFinder = find.byKey(const Key('kListShortened'));
+      expect(listFinder, findsOneWidget);
 
-    // Item 0 presente (usando a key do item)
-    final tile0 = find.byKey(const Key('kShortItem-0'));
-    expect(tile0, findsOneWidget);
+      final item0 = find.byKey(const Key('kShortItem-0'));
+      expect(item0, findsOneWidget);
 
-    // Valida textos **escopados ao item** (não global)
-    expect(
-      find.descendant(
-        of: tile0,
-        matching: find.text('https://short/flutter.dev'),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: tile0, matching: find.text(inputUrl)),
-      findsOneWidget,
-    );
+      expect(
+        find.descendant(
+          of: item0,
+          matching: find.text('https://short/flutter.dev'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: item0, matching: find.text(inputUrl)),
+        findsOneWidget,
+      );
 
-    verify(() => mockUsecase.call(inputUrl)).called(1);
-  });
+      verify(() => mockUsecase.call(inputUrl)).called(1);
+    },
+  );
 }

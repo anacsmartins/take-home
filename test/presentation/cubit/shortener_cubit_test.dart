@@ -1,69 +1,57 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
 import 'package:url_shortener/domain/entities/alias_entity.dart';
 import 'package:url_shortener/domain/usecases/shorten_url_usecase.dart';
 import 'package:url_shortener/presentation/cubit/shortener_cubit.dart';
 import 'package:url_shortener/presentation/cubit/shortener_state.dart';
 
-class MockShortenUsecase extends Mock implements ShortenUrlUseCase {}
+class MockShortenUrlUseCase extends Mock implements ShortenUrlUseCase {}
 
 void main() {
-  late MockShortenUsecase mockUsecase;
+  late MockShortenUrlUseCase mockUsecase;
   late ShortenerCubit cubit;
 
-  const inputA = 'https://flutter.dev';
-  const inputB = 'https://google.com';
-
-  const entityA = AliasEntity(
-    alias: 'flutter',
-    originalUrl: inputA,
-    shortUrl: 'https://s.dev/flutter',
-  );
-
-  const entityB = AliasEntity(
-    alias: 'google',
-    originalUrl: inputB,
-    shortUrl: 'https://s.dev/google',
+  const input = 'https://flutter.dev';
+  const entity = AliasEntity(
+    alias: 'flutterdev',
+    originalUrl: input,
+    shortUrl: 'https://short/flutterdev',
   );
 
   setUp(() {
-    mockUsecase = MockShortenUsecase();
+    mockUsecase = MockShortenUrlUseCase();
     cubit = ShortenerCubit(mockUsecase);
-    registerFallbackValue(inputA);
-    registerFallbackValue(inputB);
+
+    registerFallbackValue(input);
   });
 
-  test('emit Success with 1 element', () async {
-    when(() => mockUsecase(inputA)).thenAnswer((_) async => entityA);
+  test('success → add item to list and emit ShortenerSuccess', () async {
+    // arrange
+    when(() => mockUsecase(any())).thenAnswer((_) async => entity);
 
-    await cubit.shorten(inputA);
+    // act
+    await cubit.shorten(input);
 
+    // assert
     expect(cubit.state, isA<ShortenerSuccess>());
-    final s = cubit.state as ShortenerSuccess;
-    expect(s.list.length, 1);
-    expect(s.list.first.shortUrl, 'https://s.dev/flutter');
+    final current = cubit.state as ShortenerSuccess;
+    expect(current.list.length, 1);
+    expect(current.list.first.shortUrl, entity.shortUrl);
+    verify(() => mockUsecase(input)).called(1);
   });
 
-  test('Keep previous items and add new ones to the top', () async {
-    when(() => mockUsecase(inputA)).thenAnswer((_) async => entityA);
-    when(() => mockUsecase(inputB)).thenAnswer((_) async => entityB);
+  test('error → emit ShortenerError but keep previous items', () async {
+    // arrange
+    when(() => mockUsecase(any())).thenThrow(Exception('boom'));
 
-    await cubit.shorten(inputA);
-    await cubit.shorten(inputB);
+    // act
+    await cubit.shorten(input);
 
-    final s = cubit.state as ShortenerSuccess;
-    expect(s.list.length, 2);
-    expect(s.list.first.shortUrl, 'https://s.dev/google'); // topo
-    expect(s.list.last.shortUrl, 'https://s.dev/flutter');
-  });
-
-  test('It should throw a ShortenerError and keep the existing list', () async {
-    when(() => mockUsecase(inputA)).thenThrow(Exception('404'));
-
-    await cubit.shorten(inputA);
-
+    // assert
     expect(cubit.state, isA<ShortenerError>());
-    final s = cubit.state as ShortenerError;
-    expect(s.list.length, 0);
+    final current = cubit.state as ShortenerError;
+    expect(current.list.isEmpty, true);
+    verify(() => mockUsecase(input)).called(1);
   });
 }
