@@ -5,7 +5,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:url_shortener/data/datasources/url_shortener_api.dart';
-import 'package:url_shortener/shared/constants.dart';
 import 'package:url_shortener/shared/exceptions.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
