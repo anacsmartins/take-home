@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -23,22 +25,27 @@ void main() {
   test(
     'success → should append item and emit ShortenerSuccess with growing list',
     () async {
-      when(() => mockUsecase(urlInput)).thenAnswer((_) async {
-        return const AliasEntity(
+      // Arrange
+      when(() => mockUsecase(urlInput)).thenAnswer(
+        (_) async => const AliasEntity(
           alias: 'flutter.dev',
           originalUrl: urlInput,
           shortUrl: 'https://short/flutter.dev',
-        );
-      });
-
-      expectLater(
-        cubit.stream,
-        emitsInOrder([
-          isA<ShortenerLoading>(),
-          isA<ShortenerSuccess>().having((s) => s.list.length, 'len', 1),
-        ]),
+        ),
       );
 
+      // Assert
+      unawaited(
+        expectLater(
+          cubit.stream,
+          emitsInOrder([
+            isA<ShortenerLoading>(),
+            isA<ShortenerSuccess>().having((s) => s.list.length, 'len', 1),
+          ]),
+        ),
+      );
+
+      // Act
       await cubit.shorten(urlInput);
     },
   );
@@ -46,16 +53,20 @@ void main() {
   test(
     'error → should emit ShortenerError preserving previous items',
     () async {
+      // Arrange
       when(() => mockUsecase(urlInput)).thenThrow(Exception('boom'));
 
-      expectLater(
-        cubit.stream,
-        emitsInOrder([
-          isA<ShortenerLoading>(),
-          isA<ShortenerError>().having((s) => s.list.length, 'len', 0),
-        ]),
+      // Assert
+      unawaited(
+        expectLater(
+          cubit.stream,
+          emitsInOrder([
+            isA<ShortenerLoading>(),
+            isA<ShortenerError>().having((s) => s.list.length, 'len', 0),
+          ]),
+        ),
       );
-
+      // Act
       await cubit.shorten(urlInput);
     },
   );
