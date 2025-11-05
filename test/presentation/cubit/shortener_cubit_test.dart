@@ -12,10 +12,10 @@ void main() {
   late MockShortenUrlUseCase mockUsecase;
   late ShortenerCubit cubit;
 
-  const input = 'https://flutter.dev';
+  const urlInput = 'https://flutter.dev';
   const entity = AliasEntity(
     alias: 'flutterdev',
-    originalUrl: input,
+    originalUrl: urlInput,
     shortUrl: 'https://short/flutterdev',
   );
 
@@ -23,22 +23,22 @@ void main() {
     mockUsecase = MockShortenUrlUseCase();
     cubit = ShortenerCubit(mockUsecase);
 
-    registerFallbackValue(input);
+    registerFallbackValue(urlInput);
   });
 
   test('success → add item to list and emit ShortenerSuccess', () async {
-    // arrange
+    // arrangel.fir
     when(() => mockUsecase(any())).thenAnswer((_) async => entity);
 
     // act
-    await cubit.shorten(input);
+    await cubit.shorten(urlInput);
 
     // assert
     expect(cubit.state, isA<ShortenerSuccess>());
     final current = cubit.state as ShortenerSuccess;
     expect(current.list.length, 1);
     expect(current.list.first.shortUrl, entity.shortUrl);
-    verify(() => mockUsecase(input)).called(1);
+    verify(() => mockUsecase(urlInput)).called(1);
   });
 
   test('error → emit ShortenerError but keep previous items', () async {
@@ -46,12 +46,12 @@ void main() {
     when(() => mockUsecase(any())).thenThrow(Exception('boom'));
 
     // act
-    await cubit.shorten(input);
+    await cubit.shorten(urlInput);
 
     // assert
     expect(cubit.state, isA<ShortenerError>());
     final current = cubit.state as ShortenerError;
     expect(current.list.isEmpty, true);
-    verify(() => mockUsecase(input)).called(1);
+    verify(() => mockUsecase(urlInput)).called(1);
   });
 }
