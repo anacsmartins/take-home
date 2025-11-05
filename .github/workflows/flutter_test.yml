@@ -36,5 +36,14 @@ jobs:
       - name: Generate DI (injectable)
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
-      - name: Run tests
-        run: flutter test --no-pub
+      - name: Run tests with coverage
+        run: flutter test --coverage
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: coverage/lcov.info
+          parallel: false
+          coveralls-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+
