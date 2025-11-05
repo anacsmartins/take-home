@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           trailing: IconButton(
                             icon: const Icon(Icons.copy),
-                            onPressed: () async {
+                            onPressed: () {
                               Clipboard.setData(
                                 ClipboardData(text: item.shortUrl),
                               );
