@@ -19,7 +19,7 @@ class UrlShortenerApi {
       body: jsonEncode({'url': url}),
     );
 
-    if (resp.statusCode == 201) {
+    if (resp.statusCode == 200 || resp.statusCode == 201) {
       final json = jsonDecode(resp.body) as Map<String, dynamic>;
       return AliasResponse.fromJson(json);
     }

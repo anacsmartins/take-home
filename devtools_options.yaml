@@ -1,0 +1,11 @@
+# DevTools options for Flutter/Dart debugging
+debug:
+  enableExperiment: false
+  verboseLog: false
+
+performance:
+  trackWidgetBuilds: true
+  showPerformanceOverlay: false
+
+ui:
+  theme: dark
