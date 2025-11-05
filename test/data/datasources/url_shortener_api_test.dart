@@ -55,16 +55,20 @@ void main() {
     expect(result.shortUrl, 'https://short/flutter.dev');
   });
 
-  test('error → throws ShortenerException with status code', () async {
-    // Arrange
+  test('error → throws ShortenerException on non 200', () async {
+    // Arrage
     when(
       () => client.post(
-        Uri.parse(baseUrl),
+        any(),
         headers: any(named: 'headers'),
         body: any(named: 'body'),
       ),
-    ).thenAnswer((_) async => http.Response('boom', 500));
+    ).thenAnswer((_) async => http.Response('err', 500));
+
+    // Act
+    final call = api.shorten;
+
     // Assert
-    expect(() => api.shorten(urlInput), throwsA(isA<ShortenerException>()));
+    expect(() => call(urlInput), throwsA(isA<ShortenerException>()));
   });
 }
